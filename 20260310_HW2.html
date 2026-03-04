@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台泥與台塑組織結構及利害關係人</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        .tree-container ul {
+            padding-top: 20px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tree-container li {
+            float: left;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+        }
+
+        .tree-container li::before, .tree-container li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            border-top: 2px solid #cbd5e1;
+            width: 50%;
+            height: 20px;
+        }
+
+        .tree-container li::after {
+            right: auto;
+            left: 50%;
+            border-left: 2px solid #cbd5e1;
+        }
+
+        .tree-container li:only-child::after, .tree-container li:only-child::before { display: none; }
+        .tree-container li:only-child { padding-top: 0; }
+        .tree-container li:first-child::before, .tree-container li:last-child::after { border: 0 none; }
+        .tree-container li:last-child::before { border-right: 2px solid #cbd5e1; border-radius: 0 5px 0 0; }
+        .tree-container li:first-child::after { border-radius: 5px 0 0 0; }
+        .tree-container ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid #cbd5e1; width: 0; height: 20px; }
+
+        .node-card {
+            display: inline-block;
+            padding: 10px 15px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            min-width: 120px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .node-card:hover {
+            transform: scale(1.05);
+            border-color: #94a3b8;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tcc-theme .node-card { border-top: 4px solid #10b981; }
+        .fpc-theme .node-card { border-top: 4px solid #3b82f6; }
+        
+        .committee-node { background-color: #f8fafc; font-size: 0.8rem; border-style: dashed; }
+        .active-node { ring: 2px; ring-color: inherit; border-color: currentColor; }
+
+        /* 隱藏元素 */
+        .hidden { display: none; }
+    </style>
+</head>
+<body class="p-4">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="text-center mb-6">
+            <h1 class="text-2xl font-bold text-slate-800">企業組織與利害關係人互動圖</h1>
+            <p class="text-slate-500 text-sm mt-1">點擊下方單位查看對應之利害關係人議題</p>
+            
+            <div class="mt-4 inline-flex bg-white p-1 rounded-lg shadow-sm border">
+                <button onclick="switchCompany('tcc')" id="btn-tcc" class="px-5 py-1.5 rounded-md font-medium transition-all bg-emerald-600 text-white">1101 台泥</button>
+                <button onclick="switchCompany('fpc')" id="btn-fpc" class="px-5 py-1.5 rounded-md font-medium transition-all text-slate-600 hover:bg-slate-50">1301 台塑</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- 左側/中間：組織圖 -->
+            <div class="lg:col-span-3 bg-white p-6 rounded-xl shadow-sm overflow-x-auto min-h-[500px]">
+                
+                <!-- 台泥圖表 -->
+                <div id="chart-tcc" class="tree-container tcc-theme">
+                    <ul>
+                        <li>
+                            <div class="node-card font-bold" onclick="showStakeholder('tcc', 'investor')">股東大會</div>
+                            <ul>
+                                <li>
+                                    <div class="node-card font-bold bg-slate-50" onclick="showStakeholder('tcc', 'gov')">董事會</div>
+                                    <ul>
+                                        <li><div class="node-card committee-node" onclick="showStakeholder('tcc', 'investor')">審計委員會</div></li>
+                                        <li><div class="node-card committee-node" onclick="showStakeholder('tcc', 'employee')">薪酬委員會</div></li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <div class="node-card font-bold text-emerald-700" onclick="showStakeholder('tcc', 'investor')">董事長暨執行長</div>
+                                            <ul>
+                                                <li>
+                                                    <div class="node-card font-semibold" onclick="showStakeholder('tcc', 'employee')">總經理</div>
+                                                    <ul>
+                                                        <li><div class="node-card font-medium" onclick="showStakeholder('tcc', 'client')">水泥事業部</div></li>
+                                                        <li><div class="node-card font-medium" onclick="showStakeholder('tcc', 'supplier')">資源循環事業</div></li>
+                                                        <li><div class="node-card font-medium" onclick="showStakeholder('tcc', 'client')">綠能與儲能事業</div></li>
+                                                        <li><div class="node-card font-medium" onclick="showStakeholder('tcc', 'community')">國際與社區(DAKA)</div></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 台塑圖表 -->
+                <div id="chart-fpc" class="tree-container fpc-theme hidden">
+                    <ul>
+                        <li>
+                            <div class="node-card font-bold" onclick="showStakeholder('fpc', 'investor')">股東大會</div>
+                            <ul>
+                                <li>
+                                    <div class="node-card font-bold bg-slate-50" onclick="showStakeholder('fpc', 'gov')">董事會</div>
+                                    <ul>
+                                        <li><div class="node-card committee-node" onclick="showStakeholder('fpc', 'investor')">審計委員會</div></li>
+                                        <li><div class="node-card committee-node" onclick="showStakeholder('fpc', 'ngo')">永續委員會</div></li>
+                                    </ul>
+                                    <ul>
+                                        <li>
+                                            <div class="node-card font-bold text-blue-700" onclick="showStakeholder('fpc', 'investor')">董事長與總經理</div>
+                                            <ul>
+                                                <li>
+                                                    <div class="node-card font-semibold" onclick="showStakeholder('fpc', 'employee')">總經理室</div>
+                                                    <ul>
+                                                        <li><div class="node-card font-medium" onclick="showStakeholder('fpc', 'client')">各產品事業部</div></li>
+                                                        <li><div class="node-card font-medium" onclick="showStakeholder('fpc', 'community')">麥寮/各廠區</div></li>
+                                                        <li><div class="node-card font-medium" onclick="showStakeholder('fpc', 'supplier')">總管理處(資材)</div></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 右側：利害關係人資訊面板 -->
+            <div id="info-panel" class="bg-slate-800 text-white p-6 rounded-xl shadow-lg lg:col-span-1">
+                <div id="placeholder-text" class="h-full flex flex-col justify-center items-center text-center text-slate-400">
+                    <svg class="w-12 h-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <p>請點擊左側組織節點<br>查看利害關係人分析</p>
+                </div>
+                
+                <div id="content-area" class="hidden">
+                    <div id="info-tag" class="inline-block px-2 py-1 rounded text-xs font-bold mb-2 uppercase"></div>
+                    <h2 id="info-title" class="text-xl font-bold mb-4 border-b border-slate-700 pb-2"></h2>
+                    
+                    <div class="space-y-4">
+                        <section>
+                            <h3 class="text-emerald-400 text-sm font-bold flex items-center">
+                                <span class="mr-2">●</span> 關注核心議題
+                            </h3>
+                            <p id="info-issues" class="text-slate-300 text-sm mt-1 leading-relaxed"></p>
+                        </section>
+                        
+                        <section>
+                            <h3 class="text-blue-400 text-sm font-bold flex items-center">
+                                <span class="mr-2">●</span> 溝通與回應方式
+                            </h3>
+                            <p id="info-channels" class="text-slate-300 text-sm mt-1 leading-relaxed"></p>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stakeholderData = {
+            tcc: {
+                investor: { title: "投資者與股東", issues: "氣候變遷與減碳路徑、財務績效、ESG評比、綠能轉型進度。", channels: "法說會、年報、永續報告書、股東大會。", color: "bg-emerald-500" },
+                client: { title: "客戶", issues: "低碳水泥產品、綠電供應穩定性、產品供應鏈碳足跡。", channels: "客戶滿意度調查、產品說明會、技術研發交流。", color: "bg-emerald-500" },
+                employee: { title: "員工", issues: "職業安全衛生、數位轉型培訓、薪資福利、人才留任。", channels: "勞資會議、員工健康檢查、內部數位學習平台。", color: "bg-emerald-500" },
+                gov: { title: "政府與主管機關", issues: "碳稅/碳費政策遵循、環保法規達成率、採礦區管理。", channels: "參與法規公聽會、專案申報、實地稽查配合。", color: "bg-emerald-500" },
+                community: { title: "社區與原住民", issues: "生態多樣性維護、部落共榮與回饋、環境監測。", channels: "DAKA園區導覽、部落會議、社區教育獎助學金。", color: "bg-emerald-500" },
+                supplier: { title: "供應商", issues: "供應鏈碳管理、誠信經營、採購合約公平性。", channels: "供應商大會、年度評鑑、ESG教育訓練。", color: "bg-emerald-500" }
+            },
+            fpc: {
+                investor: { title: "投資者與股東", issues: "全球石化景氣趨勢、海外佈局、派息政策。", channels: "法說會、公開資訊觀測站、一對一投資者會議。", color: "bg-blue-500" },
+                client: { title: "客戶", issues: "產品品質穩定度、新材料研發(如醫材/半導體級)、交期。", channels: "客戶服務中心、產品說明手冊、經銷商會議。", color: "bg-blue-500" },
+                employee: { title: "員工", issues: "工廠安全操作、職業災害預防、退休保障。", channels: "安全衛生委員會、工會諮商、職安講習。", color: "bg-blue-500" },
+                gov: { title: "政府與主管機關", issues: "空氣汙染防治、廢水處理、工業安全檢查遵循。", channels: "環保監測連線、政府專案考察、法規遵循報告。", color: "bg-blue-500" },
+                community: { title: "在地居民與社區", issues: "麥寮六輕等產區環境品質、在地就業、回饋金運用。", channels: "地方說明會、台塑企業文物館、敦親睦鄰獎助金。", color: "bg-blue-500" },
+                ngo: { title: "環團與學術機構", issues: "塑膠循環利用技術、碳捕捉進度、環境影響評估。", channels: "產學合作計畫、學術研討會、ESG永續報告書。", color: "bg-blue-500" },
+                supplier: { title: "供應商", issues: "原材料供應穩定、採購合規、供應鏈風險管理。", channels: "採購系統公告、定期供應商評核。", color: "bg-blue-500" }
+            }
+        };
+
+        function switchCompany(type) {
+            document.getElementById('chart-tcc').classList.toggle('hidden', type !== 'tcc');
+            document.getElementById('chart-fpc').classList.toggle('hidden', type !== 'fpc');
+            
+            const btnTcc = document.getElementById('btn-tcc');
+            const btnFpc = document.getElementById('btn-fpc');
+            
+            if(type === 'tcc') {
+                btnTcc.className = "px-5 py-1.5 rounded-md font-medium transition-all bg-emerald-600 text-white";
+                btnFpc.className = "px-5 py-1.5 rounded-md font-medium transition-all text-slate-600 hover:bg-slate-50";
+            } else {
+                btnFpc.className = "px-5 py-1.5 rounded-md font-medium transition-all bg-blue-600 text-white";
+                btnTcc.className = "px-5 py-1.5 rounded-md font-medium transition-all text-slate-600 hover:bg-slate-50";
+            }
+            // 重置面板
+            document.getElementById('placeholder-text').classList.remove('hidden');
+            document.getElementById('content-area').classList.add('hidden');
+        }
+
+        function showStakeholder(company, role) {
+            const data = stakeholderData[company][role];
+            if (!data) return;
+
+            document.getElementById('placeholder-text').classList.add('hidden');
+            document.getElementById('content-area').classList.remove('hidden');
+            
+            const tag = document.getElementById('info-tag');
+            tag.innerText = company === 'tcc' ? "TCC Stakeholder" : "FPC Stakeholder";
+            tag.className = `inline-block px-2 py-1 rounded text-xs font-bold mb-2 uppercase ${data.color}`;
+            
+            document.getElementById('info-title').innerText = data.title;
+            document.getElementById('info-issues').innerText = data.issues;
+            document.getElementById('info-channels').innerText = data.channels;
+        }
+    </script>
+</body>
+</html>
