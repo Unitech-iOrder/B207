@@ -39,6 +39,27 @@
             margin-top: 10px;
             color: #737373;
         }
+        /* 報備按鈕樣式 */
+        .btn-reserve {
+            display: inline-block;
+            background-color: #d9534f;
+            color: #fff !important;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-top: 15px;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-reserve:hover {
+            background-color: #c9302c;
+            transform: translateY(-2px);
+        }
+        .btn-reserve:active {
+            transform: translateY(0);
+        }
         /* 搜尋框樣式 */
         .search-container {
             margin-bottom: 15px;
@@ -95,9 +116,13 @@
 <body>
     <div class="container">
         <div class="promo-box">
+            <p>✨ 此為新機預約專屬優惠</p>
             <p>📢 依報備順序優先取得，報備享有單台 -1000 現折優惠</p>
             <p>📝 報備請提供需求數量、日期、USER名稱</p>
+            <p class="small-text">※ 實際出貨日，為原廠到貨數量並依照預約順序出貨</p>
             <p class="small-text">※ 如超過需求日期出貨，將取消 -1000 資格</p>
+            
+            <a href="https://forms.gle/2CqZBkj14YXs51cF6" target="_blank" class="btn-reserve">👉 點此填寫預約報備單</a>
         </div>
 
         <div class="search-container">
