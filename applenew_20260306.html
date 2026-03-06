@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>產品報價單與活動公告</title>
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "PingFang TC", Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f4f5f7;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .promo-box {
+            border-left: 5px solid #d9534f;
+            background-color: #fdf7f7;
+            padding: 15px 20px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            color: #c9302c;
+        }
+        .promo-box p {
+            margin: 5px 0;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        .promo-box .small-text {
+            font-size: 0.9em;
+            font-weight: normal;
+            margin-top: 10px;
+            color: #737373;
+        }
+        /* 搜尋框樣式 */
+        .search-container {
+            margin-bottom: 15px;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        #searchInput:focus {
+            border-color: #a8a8a8;
+            outline: none;
+            box-shadow: 0 0 5px rgba(168, 168, 168, 0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        th {
+            background-color: #a8a8a8;
+            color: #fff;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f5f9;
+        }
+        .price {
+            text-align: right;
+            font-family: monospace;
+            font-size: 1.35em; 
+            font-weight: bold;
+            color: #b02a2a; 
+        }
+        /* RWD 讓手機觀看時可以橫向滑動表格 */
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="promo-box">
+            <p>📢 依報備順序優先取得，報備享有單台 -1000 現折優惠</p>
+            <p>📝 報備請提供需求數量、日期、USER名稱</p>
+            <p class="small-text">※ 如超過需求日期出貨，將取消 -1000 資格</p>
+        </div>
+
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="🔍 快速搜尋料號或品名（例如：MacBook、MBA、512GB）...">
+        </div>
+
+        <div class="table-responsive">
+            <table id="priceTable">
+                <thead>
+                    <tr>
+                        <th>料號</th>
+                        <th>品名</th>
+                        <th class="price" style="color: #fff;">經銷價(未稅)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>MHFA4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 銀/6 CPU/5 GPU/8GB/256GB</td><td class="price">17,887</td></tr>
+                    <tr><td>MHFD4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 青橘黃/6 CPU/5 GPU/8GB/256GB</td><td class="price">17,887</td></tr>
+                    <tr><td>MHFF4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 靛青/6 CPU/5 GPU/8GB/256GB</td><td class="price">17,887</td></tr>
+                    <tr><td>MHFH4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 胭脂粉/6 CPU/5 GPU/8GB/256GB</td><td class="price">17,887</td></tr>
+                    <tr><td>MHFC4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 銀/6 CPU/5 GPU/8GB/512GB</td><td class="price">20,585</td></tr>
+                    <tr><td>MHFE4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 青橘黃/6 CPU/5 GPU/8GB/512GB</td><td class="price">20,585</td></tr>
+                    <tr><td>MHFG4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 靛青/6 CPU/5 GPU/8GB/512GB</td><td class="price">20,585</td></tr>
+                    <tr><td>MHFJ4TA/A-JH</td><td>MacBook Neo 13 A18 Pro 胭脂粉/6 CPU/5 GPU/8GB/512GB</td><td class="price">20,585</td></tr>
+                    <tr><td>MDH74TA/A-JH</td><td>MBA 13 M5 銀/10 CPU/8 GPU/16GB/512GB</td><td class="price">32,256</td></tr>
+                    <tr><td>MDHA4TA/A-JH</td><td>MBA 13 M5 星光/10 CPU/8 GPU/16GB/512GB</td><td class="price">32,256</td></tr>
+                    <tr><td>MDHE4TA/A-JH</td><td>MBA 13 M5 午夜/10 CPU/8 GPU/16GB/512GB</td><td class="price">32,256</td></tr>
+                    <tr><td>MDHH4TA/A-JH</td><td>MBA 13 M5 天藍/10 CPU/8 GPU/16GB/512GB</td><td class="price">32,256</td></tr>
+                    <tr><td>MDH84TA/A-JH</td><td>MBA 13 M5 銀/10 CPU/10 GPU/16GB/1TB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDHC4TA/A-JH</td><td>MBA 13 M5 星光/10 CPU/10 GPU/16GB/1TB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDHF4TA/A-JH</td><td>MBA 13 M5 午夜/10 CPU/10 GPU/16GB/1TB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDHJ4TA/A-JH</td><td>MBA 13 M5 天藍/10 CPU/10 GPU/16GB/1TB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDH94TA/A-JH</td><td>MBA 13 M5 銀/10 CPU/10 GPU/24GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDHD4TA/A-JH</td><td>MBA 13 M5 星光/10 CPU/10 GPU/24GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDHG4TA/A-JH</td><td>MBA 13 M5 午夜/10 CPU/10 GPU/24GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDHK4TA/A-JH</td><td>MBA 13 M5 天藍/10 CPU/10 GPU/24GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDV94TA/A-JH</td><td>MBA 15 M5 銀/10 CPU/10 GPU/16GB/512GB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDVD4TA/A-JH</td><td>MBA 15 M5 星光/10 CPU/10 GPU/16GB/512GB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDVH4TA/A-JH</td><td>MBA 15 M5 午夜/10 CPU/10 GPU/16GB/512GB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDVQ4TA/A-JH</td><td>MBA 15 M5 天藍/10 CPU/10 GPU/16GB/512GB</td><td class="price">38,554</td></tr>
+                    <tr><td>MDVA4TA/A-JH</td><td>MBA 15 M5 銀/10 CPU/10 GPU/16GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDVE4TA/A-JH</td><td>MBA 15 M5 星光/10 CPU/10 GPU/16GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDVK4TA/A-JH</td><td>MBA 15 M5 午夜/10 CPU/10 GPU/16GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDVT4TA/A-JH</td><td>MBA 15 M5 天藍/10 CPU/10 GPU/16GB/1TB</td><td class="price">44,841</td></tr>
+                    <tr><td>MDVC4TA/A-JH</td><td>MBA 15 M5 銀/10 CPU/10 GPU/24GB/1TB</td><td class="price">51,128</td></tr>
+                    <tr><td>MDVF4TA/A-JH</td><td>MBA 15 M5 星光/10 CPU/10 GPU/24GB/1TB</td><td class="price">51,128</td></tr>
+                    <tr><td>MDVN4TA/A-JH</td><td>MBA 15 M5 午夜/10 CPU/10 GPU/24GB/1TB</td><td class="price">51,128</td></tr>
+                    <tr><td>MDVU4TA/A-JH</td><td>MBA 15 M5 天藍/10 CPU/10 GPU/24GB/1TB</td><td class="price">51,128</td></tr>
+                    <tr><td>MDE14TA/A-JH</td><td>MBP 14 M5/10CPU/10GPU/16GB/1TB/70W/SPB</td><td class="price">49,333</td></tr>
+                    <tr><td>MDE54TA/A-JH</td><td>MBP 14 M5/10CPU/10GPU/16GB/1TB/70W/SLV</td><td class="price">49,333</td></tr>
+                    <tr><td>MDE34TA/A-JH</td><td>MBP 14 M5/10CPU/10GPU/24GB/1TB/70W/SPB</td><td class="price">55,631</td></tr>
+                    <tr><td>MDE64TA/A-JH</td><td>MBP 14 M5/10CPU/10GPU/24GB/1TB/70W/SLV</td><td class="price">55,631</td></tr>
+                    <tr><td>MJ3E4TA/A-JH</td><td>MBP 14 M5 銀/10 CPU/10 GPU/32GB/1TB</td><td class="price">61,918</td></tr>
+                    <tr><td>MJ3D4TA/A-JH</td><td>MBP 14 M5 太空黑/10 CPU/10 GPU/32GB/1TB</td><td class="price">61,918</td></tr>
+                    <tr><td>MGDN4TA/A-JH</td><td>MBP 14 M5 Pro 銀/15 CPU/16 GPU/24GB/1TB</td><td class="price">67,313</td></tr>
+                    <tr><td>MGDR4TA/A-JH</td><td>MBP 14 M5 Pro 太空黑/15 CPU/16 GPU/24GB/1TB</td><td class="price">67,313</td></tr>
+                    <tr><td>MJLV4TA/A-JH</td><td>MBP 14 M5 Pro 銀/15 CPU/16 GPU/24GB/2TB</td><td class="price">79,887</td></tr>
+                    <tr><td>MJLW4TA/A-JH</td><td>MBP 14 M5 Pro 太空黑/15 CPU/16 GPU/24GB/2TB</td><td class="price">79,887</td></tr>
+                    <tr><td>MGDP4TA/A-JH</td><td>MBP 14 M5 Pro 銀/18 CPU/20 GPU/24GB/2TB</td><td class="price">86,185</td></tr>
+                    <tr><td>MGDT4TA/A-JH</td><td>MBP 14 M5 Pro 太空黑/18 CPU/20 GPU/24GB/2TB</td><td class="price">86,185</td></tr>
+                    <tr><td>MGDQ4TA/A-JH</td><td>MBP 14 M5 Max 銀/18 CPU/32 GPU/36GB/2TB</td><td class="price">107,744</td></tr>
+                    <tr><td>MGDU4TA/A-JH</td><td>MBP 14 M5 Max 太空黑/18 CPU/32 GPU/36GB/2TB</td><td class="price">107,744</td></tr>
+                    <tr><td>MGE44TA/A-JH</td><td>MBP 16 M5 Pro 銀/18 CPU/20 GPU/24GB/1TB</td><td class="price">80,790</td></tr>
+                    <tr><td>MGEA4TA/A-JH</td><td>MBP 16 M5 Pro 太空黑/18 CPU/20 GPU/24GB/1TB</td><td class="price">80,790</td></tr>
+                    <tr><td>MGE64TA/A-JH</td><td>MBP 16 M5 Pro 銀/18 CPU/20 GPU/48GB/1TB</td><td class="price">93,374</td></tr>
+                    <tr><td>MGEC4TA/A-JH</td><td>MBP 16 M5 Pro 太空黑/18 CPU/20 GPU/48GB/1TB</td><td class="price">93,374</td></tr>
+                    <tr><td>MGE74TA/A-JH</td><td>MBP 16 M5 Max 銀/18 CPU/32 GPU/36GB/2TB</td><td class="price">116,738</td></tr>
+                    <tr><td>MGED4TA/A-JH</td><td>MBP 16 M5 Max 太空黑/18 CPU/32 GPU/36GB/2TB</td><td class="price">116,738</td></tr>
+                    <tr><td>MGE94TA/A-JH</td><td>MBP 16 M5 Max 銀/18 CPU/40 GPU/48GB/2TB</td><td class="price">132,913</td></tr>
+                    <tr><td>MGEE4TA/A-JH</td><td>MBP 16 M5 Max 太空黑/18 CPU/40 GPU/48GB/2TB</td><td class="price">132,913</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function filterTable() {
+            var input, filter, table, tr, tdPartNo, tdName, i, txtValuePartNo, txtValueName;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("priceTable");
+            tr = table.getElementsByTagName("tr");
+
+            // 迴圈跑過所有的表格橫列（跳過第一列的標題）
+            for (i = 1; i < tr.length; i++) {
+                tdPartNo = tr[i].getElementsByTagName("td")[0]; // 第一欄：料號
+                tdName = tr[i].getElementsByTagName("td")[1];   // 第二欄：品名
+                
+                if (tdPartNo || tdName) {
+                    txtValuePartNo = tdPartNo.textContent || tdPartNo.innerText;
+                    txtValueName = tdName.textContent || tdName.innerText;
+                    
+                    // 如果料號或品名包含搜尋的文字，就顯示該列，否則隱藏
+                    if (txtValuePartNo.toUpperCase().indexOf(filter) > -1 || txtValueName.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }       
+            }
+        }
+    </script>
+</body>
+</html>
